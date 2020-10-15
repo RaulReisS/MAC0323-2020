@@ -20,9 +20,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-Link newNode(unsigned int id, int cpuTime, int lines, Link next, Link prev) {
+Link newNode(unsigned int id, unsigned int priori, int cpuTime, int lines, Link next, Link prev) {
 	Link node = malloc(sizeof(*node));
 	node->id = id;
+	node->priori = priori;
 	node->timeNeed = node->cpuTime = cpuTime;
 	node->linesNeed = node->lines = lines;
 	node->time = 0;
@@ -38,6 +39,10 @@ bool temLinhas(Link node) {
 	if (node->lines <= 0)
 		return false;
 	return true;
+}
+
+unsigned int prioriNode(Link node) {
+	return node->priori;
 }
 
 Link imprimeLinhas(Link node) {

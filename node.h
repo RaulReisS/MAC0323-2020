@@ -25,6 +25,7 @@ typedef struct Node* Link;
 struct Node
 {
 	unsigned int id; // Id do processo
+	unsigned int priori; // Prioridade do processo
 	unsigned int timeNeed; // Tempo inicial de processamento necessário
 	int cpuTime; // Tempo de processamento necessário restante
 	unsigned int linesNeed; // Linhas a serem impressas 
@@ -39,10 +40,13 @@ struct Node
 
 // Essa função aloca a memória de um novo Node e retorna um apontador para a
 // memória alocada com os parâmetros passados
-Link newNode(unsigned int id, int cpuTime, int lines, Link next, Link prev);
+Link newNode(unsigned int id, unsigned int priori, int cpuTime, int lines, Link next, Link prev);
 
 // Informa se um Node tem linhas para imprimir (int lines)
 bool temLinhas(Link node);
+
+// Retorna a prioridade do processo representado por node
+unsigned int prioriNode(Link node)
 
 // Realiza a ação de "imprimir" as linhas de um processo na impressoa em que
 // ele se encontra

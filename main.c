@@ -43,7 +43,8 @@ unsigned int id = 1;
 // Essa função gera, com probabilidade PROB, um novo processo representado por
 // um apontador para um Node (Link). Caso esse processo não seja gerado, o valor
 // NULL é retornado. Utiliza a variável gobal id para criar identificadores para
-// os processos
+// os processos. Cada processo recebe uma prioridade entre 0 e 9, sendo a última
+// maior. As prioridades são escolhidas com distribuição uniforme.
 Link newProcess();
 
 
@@ -189,7 +190,9 @@ Link newProcess() {
 	if (p <= PROB) {
 		int cpuTime = (rand() % 61) + 1;
 		int lines = rand() % 501;
-		Link node = newNode(id++, cpuTime, lines, NULL, NULL);
+		unsigned int priori = (unsigned int) (rand() % 10);
+
+		Link node = newNode(id++, priori, cpuTime, lines, NULL, NULL);
 		return node;
 	}
 	return NULL;
