@@ -20,12 +20,14 @@
 #define _NODE
 
 #include <stdbool.h>
+#define VPRINT 2 // Velocidade de impressão por unidade de tempo
 typedef struct Node* Link;
 
 struct Node
 {
 	unsigned int id; // Id do processo
 	unsigned int priori; // Prioridade do processo
+	unsigned int index; // Indice do processo no vetor de heap
 	unsigned int timeNeed; // Tempo inicial de processamento necessário
 	int cpuTime; // Tempo de processamento necessário restante
 	unsigned int linesNeed; // Linhas a serem impressas 
@@ -34,6 +36,7 @@ struct Node
 	unsigned int timeWait; // Tempo de permanência na fila de espera
 	unsigned int timeCPU; // Tempo de permanência na fila da CPU
 	unsigned int timePrinter; // Tempo de permanência na fila de impressão
+	bool valid; // Campo que dita se o processo pode fazer parte da contagem das médias
 	Link next; // Apontador para o próximo item na fila
 	Link prev; // Apontador para o item anterior na fila
 };
@@ -46,7 +49,10 @@ Link newNode(unsigned int id, unsigned int priori, int cpuTime, int lines, Link 
 bool temLinhas(Link node);
 
 // Retorna a prioridade do processo representado por node
-unsigned int prioriNode(Link node)
+unsigned int prioriNode(Link node);
+
+// Retorna se a prioridade do processo apontador por "a" é maioo que o apontado por "b"
+bool grater(Link a, Link b);
 
 // Realiza a ação de "imprimir" as linhas de um processo na impressoa em que
 // ele se encontra

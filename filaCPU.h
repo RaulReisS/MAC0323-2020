@@ -30,8 +30,8 @@
 #define FPRINT 'p'
 
 struct FILA {
-	Link head;
-	unsigned int size;
+	Link head; // Apontador para o nó cabeça da fila
+	unsigned int size; // Tamanho da fila
 };
 
 typedef struct FILA* Fila;
@@ -40,7 +40,7 @@ typedef struct FILA* Fila;
 // o valor do apontador
 Fila criaFila();
 
-// Coloca um novo item na fila (Não verifica se a fala está cheia). Faz nada
+// Coloca um novo item na fila (Não verifica se a fila está cheia). Faz nada
 // caso item inserido seja NULL
 void enfila(Fila fila, Link node);
 
@@ -60,8 +60,7 @@ int tam(Fila fila);
 // de uso de CPU
 void anda(Fila fila);
 
-// Aumenta o tempo de permanência do processo na fila, dependendo do parâmetro
-// de qual fila ele se encontra
+// Aumenta o tempo de permanência do processo na fila
 void timeAdd(Fila fila, char nome);
 
 // Avança uma unidade de tempo na CPU e realiza as ações necessárias. Retorna

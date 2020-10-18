@@ -28,6 +28,7 @@ Link newNode(unsigned int id, unsigned int priori, int cpuTime, int lines, Link 
 	node->linesNeed = node->lines = lines;
 	node->time = 0;
 	node->timeWait = node->timeCPU = node->timePrinter = 0;
+	node->valid = true;
 	node->next = next;
 	node->prev = prev;
 
@@ -45,9 +46,13 @@ unsigned int prioriNode(Link node) {
 	return node->priori;
 }
 
+bool grater(Link a, Link b) {
+  return a->priori > b->priori;
+}
+
 Link imprimeLinhas(Link node) {
 	if (node != NULL) {
-		node->lines = node->lines - 10;
+		node->lines = node->lines - VPRINT;
 		if (node->lines <= 0)
 			return node;
 	}
@@ -58,7 +63,7 @@ void printNode(Link node) {
 	if (node == NULL) 
 		printf("NULL\n");
 	else 
-		printf("Id: %d\nCpuTime: %d\nLines: %d\n", node->id, node->cpuTime, node->lines);
+		printf("Id: %d\n Prioridade: %d\nCpuTime: %d\nLines: %d\n", node->id, node->priori, node->cpuTime, node->lines);
 }
 
 void freeNode(Link node) {

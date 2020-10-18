@@ -31,13 +31,14 @@
 #include <stdbool.h>
 #include "node.h"
 #include "filaCPU.h"
+#include "filaEspera.h"
 
 // define FWAIT 'w'
 // define FCPU 'c'
 // define FPRINT 'p'
 
-#define PROB 0.06
-#define UTMAX 10000
+#define PROB 0.05 // Probabilidade de gerar novo processo
+#define UTMAX 10000 // Tempo de simulação padrão
 unsigned int id = 1;
 
 // Essa função gera, com probabilidade PROB, um novo processo representado por
@@ -51,22 +52,31 @@ Link newProcess();
 int main(int argc, char *argv[]) {
 	unsigned int ut = 0; // Unidades de tempo executadas
 	unsigned int utMax = UTMAX; // Unidade de tempo total da simulação
-	unsigned int end = 0; // Quantos processos encerraram sua execução
-	unsigned int endEspera = 0; // Soma do tempo na lista de espera dos processos encerrados
+	unsigned int end, endP[10]; // Quantos processos encerraram sua execução e separados por prioridade
+	unsigned int endEspera, endEsperaP[10]; // Soma do tempo na lista de espera dos processos concluídos e separados por prioridade
 	unsigned int endCpu = 0; // Soma do tempo na cpu dos processo encerrados
 	unsigned int endImpressora = 0; // Soma do tempo de espera na fila de impressao
-	unsigned int endTotal = 0;
+	unsigned int endTotal, endTotalP[10]; // Soma do tempo total do processo no sistema e separados por prioridade
+	unsigned int gerados = 0; // Número toal de processos gerados
+	unsigned int tamEsp, tamCpu, tamImp; // Tamanho das filas ao final da simulação
+	unsigned int *contP = NULL; // Número de processos na fila de espera separados por prioridade
+	unsigned int invalidos[2] = {0, 0}; // Processos que foram excluídos na contagem por entrarem no sistema quando ut < 100
 	double endRazao = 0.0; // Soma da razão entre o tempo de processamento e o tempo total
 	bool completa = false; // Se a saída é completa
 	Link impressoras[3]; // Impressoras: apontaram para o processo que estiver imprimindo
-	Fila espera = criaFila(); // Fila de processos em espera
+	FilaEspera espera = criaFilaEspera(); // Fila de processos em espera
 	Fila cpu = criaFila(); // Fila de processos na CPU
 	Fila esperaImpressora = criaFila(); // Fila de processos em espera das impressoras
 
 	srand(time(NULL));
 
-	for (int i = 0; i < 3; i++)
+	for (unsigned int i = 0; i < 3; i++)
 		impressoras[i] = NULL;
+	for (unsigned int i = 0; i < 10; i++) {
+		endP[i] = 0;
+		endTotalP[i] = 0;
+		endEsperaP[i] = 0;
+	}
 
 	if (argc >= 2)
 		utMax = atoi(argv[1]);
@@ -77,20 +87,27 @@ int main(int argc, char *argv[]) {
 		printf("------------------------");
 		printf(" UT = %d\n\n", ut);
 		Link processo = newProcess();
-		// Imprime o processo que foi gerado
 
+		// Imprime o processo que foi gerado
 		if (processo != NULL) {
 			printf("Novo processo:\n");
 			printf(" id: %d\n", processo->id);
+			printf(" Prioridade: %d\n", processo->priori);
 			printf(" Tempo de processamento: %d\n", processo->timeNeed);
 			printf(" Linhas para imprimir: %d\n\n", processo->linesNeed);
-			enfila(espera, processo);
+			if (ut < 100) {
+				processo->valid = false;
+				invalidos[0] += 1;
+			}
+			else
+				gerados++;
+			enfilaEspera(espera, processo);
 		}
 		else
 			printf("Nenhum processo novo gerado.\n\n");
 
 		if(!cheia(cpu)) {
-			enfila(cpu, desenfila(espera));
+			enfila(cpu, desenfilaEspera(espera));
 		}
 
 		processo = clockCPU(cpu);
@@ -101,21 +118,27 @@ int main(int argc, char *argv[]) {
 				double razao = ((double) tempoTotal)/((double) processo->timeNeed);
 				printf("Processo encerrado:\n");
 				printf(" id: %d\n", processo->id);
-				end += 1;
 				printf(" Dados iniciais:\n");
+				printf("	Prioridade: %d\n", processo->priori);
 				printf(" 	Tempo de processamento: %d\n", processo->timeNeed);
 				printf(" 	Linhas para imprimir: %d\n", processo->linesNeed);
 				printf(" Dados finais:\n");
 				printf(" 	Tempo da fila de espera: %d\n", processo->timeWait);
-				endEspera += processo->timeWait;
 				printf(" 	Tempo da fila de cpu: %d\n", processo->timeCPU);
-				endCpu += processo->timeCPU;
 				printf(" 	Tempo da fila de impressão: %d\n", processo->timePrinter);
-				endImpressora += processo->timePrinter;
 				printf("	Tempo total de permanência no sistema: %d\n", tempoTotal);
-				endTotal += tempoTotal;
 				printf("	Razão entre o tempo de processamento e o tempo total : %.2f\n\n", razao);
-				endRazao += razao;
+				if (processo->valid == false) {
+					invalidos[1] += 1;
+				}
+				else {
+					endP[processo->priori] += 1;
+					endEsperaP[processo->priori] += processo->timeWait;
+					endCpu += processo->timeCPU;
+					endImpressora += processo->timePrinter;
+					endTotalP[processo->priori] += tempoTotal;
+					endRazao += razao;
+				}
 				freeNode(processo);
 				processo = NULL;
 			}
@@ -134,21 +157,27 @@ int main(int argc, char *argv[]) {
 				double razao = ((double) processo->timeNeed)/((double) tempoTotal);
 				printf("Processo encerrado:\n");
 				printf(" id: %d\n", processo->id);
-				end += 1;
 				printf(" Dados iniciais:\n");
+				printf("	Prioridade: %d\n", processo->priori);
 				printf(" 	Tempo de processamento: %d\n", processo->timeNeed);
 				printf(" 	Linhas para imprimir: %d\n", processo->linesNeed);
 				printf(" Dados finais:\n");
 				printf(" 	Tempo da fila de espera: %d\n", processo->timeWait);
-				endEspera += processo->timeWait;
 				printf(" 	Tempo da fila de cpu: %d\n", processo->timeCPU);
-				endCpu += processo->timeCPU;
 				printf(" 	Tempo da fila de impressão: %d\n", processo->timePrinter);
-				endImpressora += processo->timePrinter;
 				printf("	Tempo total de permanência no sistema: %d\n", tempoTotal);
-				endTotal += tempoTotal;
 				printf("	Razão entre o tempo de processamento e o tempo total : %.2f\n\n", razao);
-				endRazao += razao;
+				if (processo->valid == false) {
+					invalidos[1] += 1;
+				}
+				else {
+					endP[processo->priori] += 1;
+					endEsperaP[processo->priori] += processo->timeWait;
+					endCpu += processo->timeCPU;
+					endImpressora += processo->timePrinter;
+					endTotalP[processo->priori] += tempoTotal;
+					endRazao += razao;
+				}
 				freeNode(processo);
 				processo = NULL;
 				impressoras[i] = NULL;
@@ -157,7 +186,7 @@ int main(int argc, char *argv[]) {
 
 		if(completa) {
 			printf("\nTamanho da fila de espera: %d. Estado da fila: \n", espera->size);
-			printFila(espera);
+			printFilaEspera(espera);
 			printf("\nTamanho da fila da cpu: %d. Estado da fila: \n", cpu->size);
 			printFila(cpu);
 			printf("\nTamanho da fila de impressão: %d. Estado da fila: \n", esperaImpressora->size);
@@ -165,23 +194,47 @@ int main(int argc, char *argv[]) {
 			printf("\n");
 
 		}
-		timeAdd(espera, FWAIT);
+		timeAddEspera(espera);
 		timeAdd(cpu, FCPU);
 		timeAdd(esperaImpressora, FPRINT);
 		ut++;
 	}
+	tamEsp = tamEspera(espera);
+	tamCpu = tam(cpu);
+	tamImp = tam(esperaImpressora);
+	contP = contagemEspera(espera);
 	liberaFila(cpu);
-	liberaFila(espera);
+	liberaFilaEspera(espera);
 	liberaFila(esperaImpressora);
 
+	for (int i = end = endTotal = endEspera = 0; i < 10; i++) {
+		end += endP[i];
+		endTotal += endTotalP[i];
+		endEspera += endEsperaP[i];
+	}
+
 	printf("\nSIMULAÇÃO FINALIZADA: \n");
-	printf("	Número total de processos executados: %d\n", end);
+	printf("	Número total de processos gerados: %d\n", gerados+invalidos[0]);
+	printf("	Número total de processos concluídos: %d\n", end+invalidos[1]);
+	printf("	Número de processos na fila de espera ao final da simulação: %d\n", tamEsp);
+	printf("	Número de processos na fila da cpu ao final da simulação: %d\n", tamCpu);
+	printf("	Número de processos na fila de impressão ao final da simulação: %d\n", tamImp);
 	printf("	Média do tempo gasto na fila de espera: %.2f\n", ((double) endEspera)/((double) end));
 	printf("	Média do tempo gasto na fila de cpu: %.2f\n", ((double) endCpu)/((double) end));
 	printf("	Média do tempo gasto na fila de impressão: %.2f\n", ((double) endImpressora)/((double) end));
 	printf("	Média do tempo total de permanência no sistema: %.2f\n", ((double) endTotal)/((double) end));
 	printf("    Média da razão entre o tempo de processamento e o tempo total: %.2f\n", endRazao/((double) end));
+	printf("\nDADOS POR PRIORIDADE: \n");
+	for (unsigned int i = 0; i < 10; i++) {
+		if (endP[i] == 0)
+			continue;
+		printf("Prioridade %d:\n", i);
+		printf("	Média do tempo total de permanência no sistema: %.2f\n", ((double) endTotalP[i])/((double) endP[i]));
+		printf("	Média do tempo total de permanência na fila de espera: %.2f\n", ((double) endEsperaP[i])/((double) endP[i]));
+		printf("	Número de processos na fila de espera ao final da simulação: %d\n", contP[i]);
+	}
 
+	free(contP);
 	return 0; 	
 }
 
@@ -193,6 +246,7 @@ Link newProcess() {
 		unsigned int priori = (unsigned int) (rand() % 10);
 
 		Link node = newNode(id++, priori, cpuTime, lines, NULL, NULL);
+		node->valid = true;
 		return node;
 	}
 	return NULL;

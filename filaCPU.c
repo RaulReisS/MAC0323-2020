@@ -18,13 +18,10 @@
 */
 #include "filaCPU.h"
 #include <stdio.h>
-// define FWAIT 'w'
-// define FCPU 'c'
-// define FPRINT 'p'
 
 Fila criaFila() {
 	Fila fila = malloc(sizeof(*fila));
-	Link head = newNode(0, 0, 0, NULL, NULL);
+	Link head = newNode(0, 10, 0, 0, NULL, NULL);
 	head->next = head;
 	head->prev = head;
 	fila->head = head;
@@ -134,5 +131,7 @@ void liberaFila(Fila fila) {
 		free(out);
 	}
 	free(fila->head);
+	fila->head = NULL;
 	free(fila);
+	fila = NULL;
 }
