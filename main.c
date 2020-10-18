@@ -15,6 +15,9 @@
 
   main.c
 
+  Para compilar, pode-se usar o seguinte comando:
+  	make
+  	
   Exemplo de uso para saída simples:
   	./EP1 10000
 
