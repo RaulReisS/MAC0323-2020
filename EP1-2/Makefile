@@ -1,4 +1,4 @@
-#Makefile para o EP1
+#Makefile para o EP2
 LIBDIR = /usr/local/lib 
 FLAGS = -Wall -std=c99 -pedantic -O2
 
