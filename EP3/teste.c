@@ -1,7 +1,12 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 int main(int argc, char *argv[]) {
-	printf("tam = %d\n", argc);
+	bool b = false;
+	if (!b)
+		printf("FALSE\n");
+	b = true;
+	if (b)
+		printf("TRUE\n");
 	return 0;
-
 }

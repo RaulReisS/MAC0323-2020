@@ -25,6 +25,6 @@ int main(int argc, char *argv[]) {
 	k = getBst(t, "porra");
 	printf("porra = %d\n", k);
 
-	LiberaBst(t);
+	liberaBst(t);
 	return 0;
 }

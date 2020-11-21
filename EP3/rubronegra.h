@@ -13,49 +13,58 @@
   Nome: Raul dos Reis Soares
   NUSP: 8535596
 
-  bst.h
+  rubronegra.h
  \__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__
 */
-#ifndef _BST
-#define _BST
+#ifndef _RUBRONEGRA
+#define _RUBRONEGRA
 
+#include <stdbool.h>
+
+// Definição de cor
+#define BLACK false
+#define RED true
 #define MAX 101
-// Estruturas para a árvore binária de busca
+
+typedef bool Cor;
+
+// Estruturas para a árvore rubro-negra
 typedef struct Node* Link;
 
 struct Node
 {
-	char *chave;
-	unsigned int valor;
-	Link left, right;
+  char *chave;
+  unsigned int valor;
+  Cor color;
+  Link left, right;
 };
 
-struct BST
+struct RUBRONEGRA
 {
-	Link root;
-	unsigned int size;
+  Link root;
+  unsigned int size;
 };
 
-typedef struct BST *Bst;
+typedef struct RUBRONEGRA* RubroNegra;
 
-/* *** Protótipo das rotinas para a ávore binária de busca *** */
+/* *** Protótipo das rotinas para a ávore binária de busca rubro-negra *** */
 
-// Função que aloca a estrutura inicial de uma Árbore binária de busca
-Bst criaBst();
+// Função que aloca a estrutura inicial de uma Árvore binária de busca Rugro-negra
+RubroNegra criaRubroNegra();
 
 // Função que insere um item na árvore com valor 1. Caso a chave já esteja na
-// árvore, será adicionado 1 no valor
-void putBst(Bst t, char* chave);
+// ávore, será adicionado 1 no valor
+void putRubroNegra(RubroNegra t, char* chave);
 
-// Função que retorna o tamanho (número de nós) de uma dada árvore
+// Função que retornar o tamanho (número de nós) de uma dada árvore
 // (ou seja, quantas palavras distintas)
-unsigned int sizeBst(Bst t);
+unsigned int sizeRubroNegra(RubroNegra t);
 
-// Função que obtém o valor de uma chave da Bst. Caso a chave não esteja na
-// árvore, o valor retornado será 0
-unsigned int getBst(Bst t, char* chave);
+// Função que obtém o valor de uma chave da bst rubro-negra. Caso a chave não
+// esteja na árvore, o valor retornado será 0
+unsigned int getRubroNegra(RubroNegra t, char* chave);
 
 // Função que libera a memória que está alocando uma árvore
-void liberaBst(Bst t);
+void liberaRubroNegra(RubroNegra t);
 
 #endif
