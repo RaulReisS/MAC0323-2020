@@ -10,10 +10,16 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 
-	FILE* fp = fopen(argv[1], "r");
-	Bst t = criaBst();
-	unsigned int k, n = 0;
+	FILE* fp;
+	Bst t;
+	Rubronegra rbt = criaRubroNegra();
+	unsigned int k, n;
 	char p[101];
+
+	printf("Para Árvore Binária de Busca:\n");
+	fp = fopen(argv[1], "r");
+	t = criaBst();
+	n = 0;
 	while (fscanf(fp, "%s", p) != EOF) {
 		n++;
 		putBst(t, p);
@@ -25,6 +31,26 @@ int main(int argc, char *argv[]) {
 	k = getBst(t, "porra");
 	printf("porra = %d\n", k);
 
+	fclose(fp);
 	liberaBst(t);
+
+	printf("\nPara Árvore Rubro-Negra:\n");
+	fp = fopen(argv[1], "r");
+	rbt = criaRubroNegra();
+	n = 0;
+	while (fscanf(fp, "%s", p) != EOF) {
+		n++;
+		putRubroNegra(rbt, p);
+	}
+
+	printf("n = %d\n", n);
+	printf("size = %d\n", sizeRubroNegra(t));
+
+	k = getRubroNegra(rbt, "porra");
+	printf("porra = %d\n", k);
+
+	fclose(fp);
+	liberaRubroNegra(rbt);
+
 	return 0;
 }
