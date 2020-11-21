@@ -7,32 +7,32 @@
 /* ***  Protótipo das rotinas auxiliares *** */
 
 // Função que aloca a memória para um novo Node
-static Link novoNode(char* chave);
+static Linkrn novoNode(char* chave);
 
 // Função recursiva para a inserção de um item na árvore
-static Link putTree(Link r, char* chave);
+static Linkrn putTree(Linkrn r, char* chave);
 
 // Função recursiva para busca de um item na árvore
-static Link getTree(Link r, char* chave);
+static Linkrn getTree(Linkrn r, char* chave);
 
 // Função recursiva para a liberação da memória de uma árvore
-static void freeNode(Link x);
+static void freeNode(Linkrn x);
 
 // Função que verifica se um nó é rubro
-static bool isRed(Link x);
+static bool isRed(Linkrn x);
 
 // Função que rotaciona os nós da árvore para a esquerda em torno de um dado nó
-static Link rotateLeft(Link h);
+static Linkrn rotateLeft(Linkrn h);
 
 // Função que rotaciona os nós da árvore para a direita em torno de um dado nó
-static Link rotateRight(Link h);
+static Linkrn rotateRight(Linkrn h);
 
 // Função que troca as cores de um nó pelas cores dos seus filhos e vice-versa
-static void flipColors(Link h);
+static void flipColors(Linkrn h);
 
 // Função que balenceia a estrutura em torno de um nó dado, caso necessário.
 // (Mantém as invariantes de uma estrutura rubro-negra)
-static Link balance(Link h);
+static Linkrn balance(Linkrn h);
 
 // Variável global auxiliar
 static unsigned int tam;
@@ -61,7 +61,7 @@ unsigned int sizeRubroNegra(RubroNegra t) {
 }
 
 unsigned int getRubroNegra(RubroNegra t, char* chave) {
-	Link x = getTree(t->root, chave);
+	Linkrn x = getTree(t->root, chave);
 	if (x == NULL)
 		return 0;
 	return x->valor;
@@ -75,8 +75,8 @@ void liberaRubroNegra(RubroNegra t) {
 
 /* ***  Implementação das rotinas auxiliares *** */
 
-static Link novoNode(char* chave) {
-	Link p = mallocSafe(sizeof(*p));
+static Linkrn novoNode(char* chave) {
+	Linkrn p = mallocSafe(sizeof(*p));
 	char *c = mallocSafe(MAX*sizeof(*c));
 
 	strcpy(c, chave);
@@ -91,16 +91,17 @@ static Link novoNode(char* chave) {
 }
 
 
-static Link putTree(Link r, char* chave) {
+static Linkrn putTree(Linkrn r, char* chave) {
 	if (r == NULL) {
 		tam++;
 		return novoNode(chave);
 	}
 
 	int cmp = strcmp(chave, r->chave);
+
 	if (cmp < 0)
 		r->left = putTree(r->left, chave);
-	if (cmp > 0)
+	else if (cmp > 0)
 		r->right = putTree(r->right, chave);
 	else
 		r->valor += 1;
@@ -110,7 +111,7 @@ static Link putTree(Link r, char* chave) {
 	return r;
 }
 
-static Link getTree(Link r, char* chave) {
+static Linkrn getTree(Linkrn r, char* chave) {
 	if (r == NULL)
 		return NULL;
 
@@ -123,7 +124,7 @@ static Link getTree(Link r, char* chave) {
 	return r;
 }
 
-static void freeNode(Link x) {
+static void freeNode(Linkrn x) {
 	if (x != NULL) {
 		freeNode(x->left);
 		freeNode(x->right);
@@ -132,14 +133,14 @@ static void freeNode(Link x) {
 	}
 }
 
-static bool isRed(Link x) {
+static bool isRed(Linkrn x) {
 	if (x == NULL || x->color == BLACK)
-		return false
+		return false;
 	return true;
 }
 
-static Link rotateLeft(Link h) {
-	Link x = h->right;
+static Linkrn rotateLeft(Linkrn h) {
+	Linkrn x = h->right;
 	h->right = x->left;
 	x->left = h;
 	x->color = h->color;
@@ -147,8 +148,8 @@ static Link rotateLeft(Link h) {
 	return x;
 }
 
-static Link rotateRight(Link h) {
-	Link x = h->left;
+static Linkrn rotateRight(Linkrn h) {
+	Linkrn x = h->left;
 	h->left = x->right;
 	x->right = h;
 	x->color = h->color;
@@ -156,13 +157,13 @@ static Link rotateRight(Link h) {
 	return x;
 }
 
-static void flipColors(Link h) {
+static void flipColors(Linkrn h) {
 	h->color = RED;
 	h->left->color = BLACK;
 	h->right->color = BLACK;
 }
 
-static Link balance(Link h) {
+static Linkrn balance(Linkrn h) {
 	if (isRed(h->right) && !isRed(h->left))
 		h = rotateLeft(h);
 	if (isRed(h->left) && isRed(h->left->left))
@@ -170,4 +171,20 @@ static Link balance(Link h) {
 	if (isRed(h->left) && isRed(h->right))
 		flipColors(h);
 	return h;
+}
+
+// TESTE
+
+
+
+static void printTree(Linkrn x) {
+	if (x != NULL) {
+		printf("Chave: %s, Valor: %d\n", x->chave, x->valor);
+		printTree(x->left);
+		printTree(x->right);
+	}	
+}
+
+void printarvore(RubroNegra t) {
+	printTree(t->root);
 }

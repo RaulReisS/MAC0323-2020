@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include "bst.h"
+#include "rubronegra.h"
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
@@ -12,7 +13,7 @@ int main(int argc, char *argv[]) {
 
 	FILE* fp;
 	Bst t;
-	Rubronegra rbt = criaRubroNegra();
+	RubroNegra rbt = criaRubroNegra();
 	unsigned int k, n;
 	char p[101];
 
@@ -44,10 +45,12 @@ int main(int argc, char *argv[]) {
 	}
 
 	printf("n = %d\n", n);
-	printf("size = %d\n", sizeRubroNegra(t));
+	printf("size = %d\n", sizeRubroNegra(rbt));
 
 	k = getRubroNegra(rbt, "porra");
 	printf("porra = %d\n", k);
+
+	// printarvore(rbt);
 
 	fclose(fp);
 	liberaRubroNegra(rbt);

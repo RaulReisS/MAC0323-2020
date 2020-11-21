@@ -29,19 +29,19 @@
 typedef bool Cor;
 
 // Estruturas para a árvore rubro-negra
-typedef struct Node* Link;
+typedef struct Nodern* Linkrn;
 
-struct Node
+struct Nodern
 {
   char *chave;
   unsigned int valor;
   Cor color;
-  Link left, right;
+  Linkrn left, right;
 };
 
 struct RUBRONEGRA
 {
-  Link root;
+  Linkrn root;
   unsigned int size;
 };
 
@@ -66,5 +66,7 @@ unsigned int getRubroNegra(RubroNegra t, char* chave);
 
 // Função que libera a memória que está alocando uma árvore
 void liberaRubroNegra(RubroNegra t);
+
+void printarvore(RubroNegra t);
 
 #endif
