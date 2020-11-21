@@ -67,6 +67,4 @@ unsigned int getRubroNegra(RubroNegra t, char* chave);
 // Função que libera a memória que está alocando uma árvore
 void liberaRubroNegra(RubroNegra t);
 
-void printarvore(RubroNegra t);
-
 #endif

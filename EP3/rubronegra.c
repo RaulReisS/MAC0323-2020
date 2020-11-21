@@ -172,19 +172,3 @@ static Linkrn balance(Linkrn h) {
 		flipColors(h);
 	return h;
 }
-
-// TESTE
-
-
-
-static void printTree(Linkrn x) {
-	if (x != NULL) {
-		printf("Chave: %s, Valor: %d\n", x->chave, x->valor);
-		printTree(x->left);
-		printTree(x->right);
-	}	
-}
-
-void printarvore(RubroNegra t) {
-	printTree(t->root);
-}
