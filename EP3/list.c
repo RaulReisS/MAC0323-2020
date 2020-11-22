@@ -26,9 +26,6 @@
 
 static Item novoItem(char* chave);
 
-
-// Função que remove um Item da lista ()
-
 /* *** Implementação das rotinas principais *** */
 
 List criaList() {
@@ -122,6 +119,9 @@ Item removeListItem(List s) {
 }
 
 unsigned int getList(List s, char* chave) {
+  if (s == NULL)
+    return 0;
+
   int k = 1;
   Item p = s->head;
   while (p != NULL && (k = strcmp(chave, p->chave)) != 0 && p->prox != NULL) {
@@ -134,6 +134,9 @@ unsigned int getList(List s, char* chave) {
 }
 
 unsigned int getListMTF(List s, char* chave) {
+  if (s == NULL)
+    return 0;
+  
   int k = 1;
   Item p = s->head;
   while (p != NULL && (k = strcmp(chave, p->chave)) != 0 && p->prox != NULL) {
@@ -156,6 +159,8 @@ unsigned int getListMTF(List s, char* chave) {
 }
 
 unsigned int sizeList(List s) {
+  if(s == NULL)
+    return 0;
   return s->size;
 }
 
@@ -168,15 +173,17 @@ void liberaItem(Item item) {
 }
 
 void liberaLista(List s) {
-  Item p;
-  p = s->head;
-  while (p != NULL) {
-    Item q = p->prox;
-    liberaItem(p);
-    p = q;
+  if (s != NULL) {
+    Item p;
+    p = s->head;
+    while (p != NULL) {
+      Item q = p->prox;
+      liberaItem(p);
+      p = q;
+    }
+    free(s);
+    s = NULL;
   }
-  free(s);
-  s = NULL;
 }
 
 
