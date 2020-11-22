@@ -4,10 +4,10 @@ FLAGS = -Wall -std=c99 -pedantic -O2
 
 all: ep3 tidyup
 
-ep3: main.o util.o bst.o rubronegra.o list.o hashencadeado.o
-	gcc -o ep3 main.o util.o bst.o rubronegra.o list.o hashencadeado.o
+ep3: main.o util.o bst.o rubronegra.o list.o hashencadeado.o hashlinear.o
+	gcc -o ep3 main.o util.o bst.o rubronegra.o list.o hashencadeado.o hashlinear.o
 
-main.o: main.c bst.h rubronegra.h hashencadeado.h
+main.o: main.c bst.h rubronegra.h hashencadeado.h hashlinear.h
 	gcc $(FLAGS) main.c -c
 
 bst.o: bst.c bst.h util.h
@@ -21,6 +21,9 @@ hashencadeado.o: hashencadeado.c hashencadeado.h util.h list.h
 
 list.o: list.c list.h util.h
 	gcc $(FLAGS) list.c -c
+
+hashlinear.o: hashlinear.c hashlinear.h util.h
+	gcc $(FLAGS) hashlinear.c -c
 
 util.o: util.c util.h
 	gcc $(FLAGS) util.c -c

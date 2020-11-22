@@ -5,6 +5,7 @@
 #include "bst.h"
 #include "rubronegra.h"
 #include "hashencadeado.h"
+#include "hashlinear.h"
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
@@ -16,6 +17,7 @@ int main(int argc, char *argv[]) {
 	Bst t;
 	RubroNegra rbt;
 	HashCad hash, hashMTF;
+	HashLin hashLin;
 	unsigned int k, n;
 	char p[101];
 
