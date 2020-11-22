@@ -96,5 +96,23 @@ int main(int argc, char *argv[]) {
 	fclose(fp);
 	liberaHashCad(hashMTF);
 
+	printf("\nPara Hashing com Sondagem Linear\n");
+	fp = fopen(argv[1], "r");
+	hashLin = criaHashLin();
+	n = 0;
+	while (fscanf(fp, "%s", p) != EOF) {
+		n++;
+		putHashLin(hashLin, p);
+	}
+
+	printf("n = %d\n", n);
+	printf("size = %d\n", sizeHashLin(hashLin));
+
+	k = getHashLin(hashLin, "porra");
+	printf("porra = %d\n", k);
+
+	fclose(fp);
+	liberaHashLin(hashLin);
+
 	return 0;
 }
