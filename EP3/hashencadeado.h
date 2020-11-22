@@ -37,11 +37,11 @@ typedef struct HASHENCADEADO* HashCad;
 // Função que aloca a estrutura inicial de uma Tabela de Símbolos com Hash por encadeamento
 HashCad criaHashCad();
 
-// Função que insere um item na tabela com valor 1. Caso a chave já esteja na árvore, será
+// Função que insere um item na tabela com valor 1. Caso a chave já esteja na tabela, será
 // adicionado 1 no valor
 void putHashCad(HashCad hst, char* chave);
 
-// Função que insere um item na tabela com valor 1. Caso a chave já esteja na árvore, será
+// Função que insere um item na tabela com valor 1. Caso a chave já esteja na tabela, será
 // adicionado 1 no valor. Esta versão utiliza Encadeamento com Move to Front.(MTF)
 void putHashCadMTF(HashCad hst, char* chave);
 

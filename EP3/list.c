@@ -204,14 +204,3 @@ static Item novoItem(char* chave) {
 
   return item;
 }
-
-void printList(List s) {
-  if (s != NULL) {
-    Item p = s->head;
-    while (p != NULL) {
-     printf("%s  -> ", p->chave);
-     p = p->prox;
-   }
-  }
-     printf("\n");
-}
