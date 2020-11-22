@@ -6,6 +6,7 @@
 #include "rubronegra.h"
 #include "hashencadeado.h"
 #include "hashlinear.h"
+#include "trie.h"
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
@@ -18,6 +19,7 @@ int main(int argc, char *argv[]) {
 	RubroNegra rbt;
 	HashCad hash, hashMTF;
 	HashLin hashLin;
+	Trie tst;
 	unsigned int k, n;
 	char p[101];
 
@@ -113,5 +115,24 @@ int main(int argc, char *argv[]) {
 
 	fclose(fp);
 	liberaHashLin(hashLin);
+
+	printf("\nPara Trie, implimentado com Trie ternária\n");
+	fp = fopen(argv[1], "r");
+	tst = criaTrie();
+	n = 0;
+	while (fscanf(fp, "%s", p) != EOF) {
+		n++;
+		putTrie(tst, p);
+	}
+
+	printf("n = %d\n", n);
+	printf("size = %d\n", sizeTrie(tst));
+
+	k = getTrie(tst, "porra");
+	printf("porra = %d\n", k);
+
+	fclose(fp);
+	liberaTrie(tst);
+
 	return 0;
 }
