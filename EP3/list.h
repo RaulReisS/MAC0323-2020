@@ -74,4 +74,6 @@ void liberaItem(Item item);
 // Função que libera a memória utilizada por uma lista
 void liberaLista(List s);
 
+void printList(List s);
+
 #endif

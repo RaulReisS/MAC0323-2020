@@ -4,6 +4,7 @@
 #include <string.h>
 #include "bst.h"
 #include "rubronegra.h"
+#include "hashencadeado.h"
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
@@ -13,7 +14,8 @@ int main(int argc, char *argv[]) {
 
 	FILE* fp;
 	Bst t;
-	RubroNegra rbt = criaRubroNegra();
+	RubroNegra rbt;
+	HashCad hash, hashMTF;
 	unsigned int k, n;
 	char p[101];
 
@@ -35,6 +37,7 @@ int main(int argc, char *argv[]) {
 	fclose(fp);
 	liberaBst(t);
 
+	///////////////////////////////////
 	printf("\nPara Árvore Rubro-Negra:\n");
 	fp = fopen(argv[1], "r");
 	rbt = criaRubroNegra();
@@ -54,6 +57,42 @@ int main(int argc, char *argv[]) {
 
 	fclose(fp);
 	liberaRubroNegra(rbt);
+
+	printf("\nPara Hashing com encadeamento\n");
+	fp = fopen(argv[1], "r");
+	hash = criaHashCad();
+	n = 0;
+	while (fscanf(fp, "%s", p) != EOF) {
+		n++;
+		putHashCad(hash, p);
+	}
+
+	printf("n = %d\n", n);
+	printf("size = %d\n", sizeHashCad(hash));
+
+	k = getHashCad(hash, "porra");
+	printf("porra = %d\n", k);
+
+	fclose(fp);
+	liberaHashCad(hash);
+
+	printf("\nPara Hashing com encadeamento e MTF\n");
+	fp = fopen(argv[1], "r");
+	hashMTF = criaHashCad();
+	n = 0;
+	while (fscanf(fp, "%s", p) != EOF) {
+		n++;
+		putHashCadMTF(hashMTF, p);
+	}
+
+	printf("n = %d\n", n);
+	printf("size = %d\n", sizeHashCad(hashMTF));
+
+	k = getHashCad(hashMTF, "porra");
+	printf("porra = %d\n", k);
+
+	fclose(fp);
+	liberaHashCad(hashMTF);
 
 	return 0;
 }

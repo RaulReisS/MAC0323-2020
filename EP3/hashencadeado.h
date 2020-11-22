@@ -25,12 +25,12 @@
 // Estrutura para um hash com encadeamento
 struct HASHENCADEADO
 {
-	List st;
+	List *st;
 	unsigned int n;
 	unsigned int m;
 };
 
-typedef HASHENCADEADO* HashCad;
+typedef struct HASHENCADEADO* HashCad;
 
 /* *** Protótipo das rotinas para a ávore binária de busca *** */
 
@@ -47,11 +47,11 @@ void putHashCadMTF(HashCad hst, char* chave);
 
 // Função que retorna o valor associado a uma determinada chave. Se a chave não estiver na st,
 // então o valor retornado será 0
-void getHashCad(HashCad hst, char* chave);
+unsigned int getHashCad(HashCad hst, char* chave);
 
 // Função que retorna o valor associado a uma determinada chave. Se a chave não estiver na st,
 // então o valor retornado será 0. Esta versão utiliza encadeamento com Move to Front (MTF)
-void getHashCadMTF(HashCad hst, char* chave);
+unsigned int getHashCadMTF(HashCad hst, char* chave);
 
 //Função que retorna quantos itens estão na tabela
 unsigned int sizeHashCad(HashCad hst);

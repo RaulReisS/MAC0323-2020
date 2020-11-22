@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "util.h"
+#include "hashencadeado.h"
 
 /* ***  Protótipo das rotinas auxiliares *** */
 
@@ -34,7 +35,7 @@ static void resize(HashCad hst, unsigned int size);
 
 HashCad criaHashCad() {
   HashCad hst = mallocSafe(sizeof(*hst));
-  List st = mallocSafe(INIT*sizeof(*st));
+  List *st = mallocSafe(INIT*sizeof(*st));
   for (int i = 0; i < INIT; i++)
     st[i] = NULL;
 
@@ -46,6 +47,7 @@ HashCad criaHashCad() {
 }
 
 void putHashCad(HashCad hst, char* chave) {
+
   if (hst->n >= 11 * hst->m)
     resize(hst, 3 * hst->m);
   int h = hash(chave, hst->m);
@@ -56,7 +58,7 @@ void putHashCad(HashCad hst, char* chave) {
 
   k = sizeList(hst->st[h]);
   putList(hst->st[h], chave);
-  if (k != sizeList(hst=>st[h]))
+  if (k != sizeList(hst->st[h]))
     hst->n += 1;
 }
 
@@ -71,16 +73,16 @@ void putHashCadMTF(HashCad hst, char* chave) {
 
   k = sizeList(hst->st[h]);
   putListMTF(hst->st[h], chave);
-  if (k != sizeList(hst=>st[h]))
+  if (k != sizeList(hst->st[h]))
     hst->n += 1; 
 }
 
-void getHashCad(HashCad hst, char* chave) {
+unsigned int getHashCad(HashCad hst, char* chave) {
   int h = hash(chave, hst->m);
   return getList(hst->st[h], chave);
 }
 
-void getHashCadMTF(HashCad hst, char* chave) {
+unsigned int getHashCadMTF(HashCad hst, char* chave) {
   int h = hash(chave, hst->m);
   return getListMTF(hst->st[h], chave);
 }
@@ -110,12 +112,12 @@ static int hash(char* chave, unsigned int m) {
 static void resize(HashCad hst, unsigned int size) {
   Item p = NULL;
   int h = 0;
-  aux = hst->m;
+  int aux = hst->m;
   hst->m = size;
 
-  List newSt = mallocSafe(size * sizeof(*newSt));
+  List *newSt = mallocSafe(size * sizeof(*newSt));
   for (h = 0; h < size; h++)
-    st[h] = NULL;
+    newSt[h] = NULL;
 
   for (int i = 0; i < aux; i++) {
     while(sizeList(hst->st[i]) > 0) {

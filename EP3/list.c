@@ -17,7 +17,7 @@
  \__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__
 */
 #include <stdio.h>
-#include <stdilib.h>
+#include <stdlib.h>
 #include <string.h>
 #include "util.h"
 #include "list.h"
@@ -29,9 +29,10 @@ static Item novoItem(char* chave);
 /* *** Implementação das rotinas principais *** */
 
 List criaList() {
-  List s = void *mallocSafe(sizeof(*s));
+  List s = mallocSafe(sizeof(*s));
   s->head = NULL;
   s->size = 0;
+  return s;
 }
 
 void putList(List s, char* chave) {
@@ -50,6 +51,7 @@ void putList(List s, char* chave) {
   else {
     Item novo = novoItem(chave);
     novo->prev = p;
+    p->prox = novo;
     s->size += 1;
   }
 }
@@ -136,7 +138,7 @@ unsigned int getList(List s, char* chave) {
 unsigned int getListMTF(List s, char* chave) {
   if (s == NULL)
     return 0;
-  
+
   int k = 1;
   Item p = s->head;
   while (p != NULL && (k = strcmp(chave, p->chave)) != 0 && p->prox != NULL) {
@@ -201,4 +203,15 @@ static Item novoItem(char* chave) {
   item->prox = NULL;
 
   return item;
+}
+
+void printList(List s) {
+  if (s != NULL) {
+    Item p = s->head;
+    while (p != NULL) {
+     printf("%s  -> ", p->chave);
+     p = p->prox;
+   }
+  }
+     printf("\n");
 }
