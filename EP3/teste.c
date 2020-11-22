@@ -2,11 +2,11 @@
 #include <stdbool.h>
 
 int main(int argc, char *argv[]) {
-	bool b = false;
-	if (!b)
-		printf("FALSE\n");
-	b = true;
-	if (b)
-		printf("TRUE\n");
+	int k;
+
+	if ((k = 0) == 0){
+		printf("DEU CERTO\n");
+	}
+
 	return 0;
 }
