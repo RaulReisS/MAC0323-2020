@@ -29,7 +29,7 @@
 static int hash(char* chave, unsigned int m);
 
 // Função que reajusta o tamanho do vetor da tabela de hash
-static void resize(HashCad hst, unsigned int size);
+static void resize(HashLin hst, unsigned int size);
 
 // Função que compara as chaves de duas casas do vetor
 static int compare(char* a, char* b);
@@ -52,20 +52,20 @@ HashLin criaHashLin() {
     hst->st = st;
     hst->n = 0;
     hst->m = START;
-
     return hst;
 }
 
 void putHashLin(HashLin hst, char* chave) {
-    if (hst->n <= (hst->m)/2)
-        resize(hst, 2*m);
+    if (hst->n >= (hst->m)/2)
+        resize(hst, 2*(hst->m));
 
     int h = 0;
-    for (h = hash(chave, hst->m); hst->st[h] != NULL; h = (h+1) % hst->m)
+    for (h = hash(chave, hst->m); hst->st[h] != NULL; h = (h+1) % hst->m) {
         if (compare(hst->st[h]->chave, chave) == 0) {
             hst->st[h]->valor += 1;
             return;
         }
+    }
     hst->st[h] = novaCasa(chave);
     hst->n += 1;
 }
@@ -95,13 +95,15 @@ static int hash(char* chave, unsigned int m) {
     int h = 0;
     int tam = strlen(chave);
     for (int i = 0; i < tam; i++)
-        h = (31 * h + chave[i]) % m
+        h = (31 * h + chave[i]) % m;
 
     return h;
 }
 
-static void resize(HashCad hst, unsigned int size) {
+static void resize(HashLin hst, unsigned int size) {
     Casa *novo = mallocSafe(size*sizeof(*novo));
+    for (int i = 0; i < size; i++)
+        novo[i] = NULL;
 
     for(int i = 0; i < hst->m; i++) {
         if (hst->st[i] != NULL) {
@@ -116,6 +118,8 @@ static void resize(HashCad hst, unsigned int size) {
     free(hst->st);
     hst->st = novo;
     hst->m = size;
+
+    printf("DEI RESIZE\n");
 }
 
 static int compare(char* a, char* b) {
@@ -130,7 +134,7 @@ static Casa novaCasa(char* chave) {
 
     strcpy(c, chave);
 
-    casa->chave = chave;
+    casa->chave = c;
     casa->valor = 1;
 
     return casa;
@@ -141,5 +145,14 @@ static void liberaCasa(Casa casa) {
         free(casa->chave);
         free(casa);
         casa = NULL;
+    }
+}
+
+void printVetor(HashLin hst) {
+    for (int i = 0; i < hst->m; i++) {
+        printf("%d: ", i);
+        if (hst->st[i] != NULL)
+            printf("%s", hst->st[i]->chave);
+        printf("\n");
     }
 }

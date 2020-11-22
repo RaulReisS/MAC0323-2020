@@ -113,6 +113,5 @@ int main(int argc, char *argv[]) {
 
 	fclose(fp);
 	liberaHashLin(hashLin);
-
 	return 0;
 }

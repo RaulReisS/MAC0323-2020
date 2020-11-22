@@ -19,7 +19,7 @@
 #ifndef _HASHLINEAR
 #define _HASHLINEAR
 
-#define START 43
+#define START 300
 #define TAM 101
 
 // Estrutura para um hash com sondagem linear
