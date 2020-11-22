@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "util.h"
-#include "true.h"
+#include "trie.h"
 
 /* ***  Protótipo das rotinas auxiliares *** */
 
@@ -36,6 +36,9 @@ static No putT(No x, char* chave, int d);
 // Função auxiliar recursiva para busca de uma chave na Trie
 static No getT(No x, char* chave, int d);
 
+// Variável global auxiliar
+static unsigned int insert;
+
 
 /* *** Implementação das rotinas principais *** */
 
@@ -49,11 +52,13 @@ Trie criaTrie() {
 }
 
 void putTrie(Trie tst, char* chave) {
+    insert = 0;
     tst->root = putT(tst->root, chave, 0);
+    tst->size += insert;
 }
 
 unsigned int getTrie(Trie tst, char* chave) {
-    Node x = getT(tst->root, chave, 0);
+    No x = getT(tst->root, chave, 0);
     if (x == NULL)
         return 0;
     return x->valor;
@@ -72,10 +77,12 @@ void liberaTrie(Trie tst) {
 /* ***  Implementação das rotinas auxiliares *** */
 
 static No novoNo(char c) {
-    No x = mallocSafe(*x);
+    No x = mallocSafe(sizeof(*x));
     x->c = c;
     x->valor = 0;
-    x->left = x->mid = x->left = NULL;4
+    x->left = NULL;
+    x->right = NULL;
+    x->mid = NULL;
 
     return x;
 }
@@ -96,14 +103,17 @@ static No putT(No x, char* chave, int d) {
     if (x == NULL)
         x = novoNo(c);
 
-    if (c < x->x)
+    if (c < x->c)
         x->left = putT(x->left, chave, d);
     else if (c > x->c)
         x->right = putT(x->right, chave, d);
     else if (d < strlen(chave) - 1)
         x->mid = putT(x->mid, chave, d+1);
-    else
+    else {
+        if (x->valor == 0)
+            insert = 1;
         x->valor += 1;
+    }
 
     return x;
 }

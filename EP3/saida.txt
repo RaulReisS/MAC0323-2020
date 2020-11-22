@@ -1,0 +1,29 @@
+Para Árvore Binária de Busca:
+n = 277
+size = 127
+porra = 4
+
+Para Árvore Rubro-Negra:
+n = 277
+size = 127
+porra = 4
+
+Para Hashing com encadeamento
+n = 277
+size = 127
+porra = 4
+
+Para Hashing com encadeamento e MTF
+n = 277
+size = 127
+porra = 4
+
+Para Hashing com Sondagem Linear
+n = 277
+size = 127
+porra = 4
+
+Para Trie, implimentado com Trie ternária
+n = 277
+size = 127
+porra = 4
