@@ -118,8 +118,6 @@ static void resize(HashLin hst, unsigned int size) {
     free(hst->st);
     hst->st = novo;
     hst->m = size;
-
-    printf("DEI RESIZE\n");
 }
 
 static int compare(char* a, char* b) {

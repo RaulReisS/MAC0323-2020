@@ -1,0 +1,140 @@
+/*    
+ \__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__
+
+  AO PREENCHER ESSE CABEÇALHO COM O MEU NOME E O MEU NÚMERO USP, 
+  DECLARO QUE SOU O ÚNICO AUTOR E RESPONSÁVEL POR ESSE PROGRAMA. 
+  TODAS AS PARTES ORIGINAIS DESSE EXERCÍCIO-PROGRAMA (EP) FORAM 
+  DESENVOLVIDAS E IMPLEMENTADAS POR MIM SEGUINDO AS INSTRUÇÕES DESSE EP
+  E QUE PORTANTO NÃO CONSTITUEM PLÁGIO. DECLARO TAMBÉM QUE SOU RESPONSÁVEL
+  POR TODAS AS CÓPIAS DESSE PROGRAMA E QUE EU NÃO DISTRIBUI OU FACILITEI A
+  SUA DISTRIBUIÇÃO. ESTOU CIENTE QUE OS CASOS DE PLÁGIO SÃO PUNIDOS COM 
+  REPROVAÇÃO DIRETA NA DISCIPLINA.
+
+  Nome: Raul dos Reis Soares
+  NUSP: 8535596
+
+  relatorio.txt
+ \__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__\__
+*/
+
+Testes realizados com os arquivos encontrados em: https://www.ime.usp.br/~cris/mac0323/programas/ST/data/
+Somado com o arquivo encontrado em: https://www.ime.usp.br/~cris/mac0323/eps/ep3/les_miserables.txt
+
+----------------------------------------------------------------------------------------------
+teste1.txt:
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo teste1.txt:
+  Para Árvore Binária de Busca: 0.006
+  Para Árvore Rubro-Negra: 0.005
+  Para Hashing com encadeamento: 0.005
+  Para Hashing com encadeamento e MTF: 0.005
+  Para Hashing com Sondagem Linear: 0.005
+  Para Trie, implimentado com Trie Ternária: 0.005
+
+----------------------------------------------------------------------------------------------
+teste2.txt:
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo teste2.txt:
+  Para Árvore Binária de Busca: 0.029
+  Para Árvore Rubro-Negra: 0.036
+  Para Hashing com encadeamento: 0.042
+  Para Hashing com encadeamento e MTF: 0.034
+  Para Hashing com Sondagem Linear: 0.03
+  Para Trie, implimentado com Trie Ternária: 0.04
+
+----------------------------------------------------------------------------------------------
+tinyST.txt
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo tiny.ST.txt:
+  Para Árvore Binária de Busca: 0.026
+  Para Árvore Rubro-Negra: 0.027
+  Para Hashing com encadeamento: 0.034
+  Para Hashing com encadeamento e MTF: 0.022
+  Para Hashing com Sondagem Linear: 0.015
+  Para Trie, implimentado com Trie Ternária: 0.019
+
+
+----------------------------------------------------------------------------------------------
+ind.txt: 
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo ind.txt:
+  Para Árvore Binária de Busca: 0.441
+  Para Árvore Rubro-Negra: 0.496
+  Para Hashing com encadeamento: 0.348
+  Para Hashing com encadeamento e MTF: 0.362
+  Para Hashing com Sondagem Linear: 0.295
+  Para Trie, implimentado com Trie Ternária: 0.366
+
+----------------------------------------------------------------------------------------------
+tale.txt:
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo tale.txt:
+  Para Árvore Binária de Busca: 41.9
+  Para Árvore Rubro-Negra: 45.6
+  Para Hashing com encadeamento: 34
+  Para Hashing com encadeamento e MTF: 36
+  Para Hashing com Sondagem Linear: 32.7
+  Para Trie, implimentado com Trie Ternária: 35.9
+
+----------------------------------------------------------------------------------------------
+bible.txt: 
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo bible.txt:
+  Para Árvore Binária de Busca: 133
+  Para Árvore Rubro-Negra: 170
+  Para Hashing com encadeamento: 119
+  Para Hashing com encadeamento e MTF: 116
+  Para Hashing com Sondagem Linear: 108
+  Para Trie, implimentado com Trie Ternária: 118
+
+---------------------------------------------------------------------------------------------
+cities.txt:
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo cities.txt:
+  Para Árvore Binária de Busca: 119
+  Para Árvore Rubro-Negra: 149
+  Para Hashing com encadeamento: 90.2
+  Para Hashing com encadeamento e MTF: 92.7
+  Para Hashing com Sondagem Linear: 87
+  Para Trie, implimentado com Trie Ternária: 101
+
+----------------------------------------------------------------------------------------------
+les_miserables.txt:
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo les_miserables.txt:
+  Para Árvore Binária de Busca: 179
+  Para Árvore Rubro-Negra: 264
+  Para Hashing com encadeamento: 139
+  Para Hashing com encadeamento e MTF: 148
+  Para Hashing com Sondagem Linear: 134
+  Para Trie, implimentado com Trie Ternária: 163
+
+----------------------------------------------------------------------------------------------
+les_miserables.txt (Ordenado de A-Z)
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo data/les_miserables_ord.txt:
+  Para Árvore Binária de Busca: 149
+  Para Árvore Rubro-Negra: 172
+  Para Hashing com encadeamento: 149
+  Para Hashing com encadeamento e MTF: 150
+  Para Hashing com Sondagem Linear: 140
+  Para Trie, implimentado com Trie Ternária: 137
+---------------------------------------------------------------------------------------------
+
+les_miserables.txt (Ordenado de Z-A)
+
+Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo data/les_miserables_desord.txt:
+  Para Árvore Binária de Busca: 163
+  Para Árvore Rubro-Negra: 161
+  Para Hashing com encadeamento: 138
+  Para Hashing com encadeamento e MTF: 139
+  Para Hashing com Sondagem Linear: 134
+  Para Trie, implimentado com Trie Ternária: 140
+
+
+Conclusão:
+Da forma em que as tabelas de símbolos (ajustada para a aplicação de contagem de palavras)
+foram implementadas, vimos que, de maneira geral, a estrutura de dados mais eficiente foi a
+sondagem linear para arquivos maiores e a menos eficiente foi a árvore rubro-negra, porém
+para o arquivo ordenado de Z-A, Vimos que a rubro-negra se aproxima da árvore binária.
+Para os arquivos em que não há tratamento de entrada, temos uma melhora no desempenho da árvore rubro-negra.

@@ -2,11 +2,19 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <time.h>
 #include "bst.h"
 #include "rubronegra.h"
 #include "hashencadeado.h"
 #include "hashlinear.h"
 #include "trie.h"
+
+// Cria um arquivo temporário com as astring tratadas: todas
+// em minúsculo sem caracteres especiais
+static void criaTemp(char* arq);
+
+// Apaga o arquivo temporário
+static void removeTemp();
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
@@ -14,125 +22,117 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 
+	char p[101];
+	clock_t init, end;
+	double time;
 	FILE* fp;
 	Bst t;
-	RubroNegra rbt;
+	RubroNegra rnt;
 	HashCad hash, hashMTF;
 	HashLin hashLin;
 	Trie tst;
-	unsigned int k, n;
-	char p[101];
 
-	printf("Para Árvore Binária de Busca:\n");
-	fp = fopen(argv[1], "r");
+	criaTemp(argv[1]);
+
+	printf("Teste de tempo criação (em milisegundos) de estrutura baseado no arquivo %s:\n", argv[1]);
+
+	printf("  Para Árvore Binária de Busca: ");
+	fp = fopen("tmp.txt", "r");
+	init = clock();
 	t = criaBst();
-	n = 0;
-	while (fscanf(fp, "%s", p) != EOF) {
-		n++;
+	while (fscanf(fp, "%s", p) != EOF)
 		putBst(t, p);
-	}
-
-	printf("n = %d\n", n);
-	printf("size = %d\n", sizeBst(t));
-
-	k = getBst(t, "porra");
-	printf("porra = %d\n", k);
-
+	end = clock();
 	fclose(fp);
 	liberaBst(t);
+	time = (double) (end - init) * 1000.0 / (double) CLOCKS_PER_SEC;
+	printf("%.3g\n", time);
 
-	///////////////////////////////////
-	printf("\nPara Árvore Rubro-Negra:\n");
-	fp = fopen(argv[1], "r");
-	rbt = criaRubroNegra();
-	n = 0;
-	while (fscanf(fp, "%s", p) != EOF) {
-		n++;
-		putRubroNegra(rbt, p);
-	}
-
-	printf("n = %d\n", n);
-	printf("size = %d\n", sizeRubroNegra(rbt));
-
-	k = getRubroNegra(rbt, "porra");
-	printf("porra = %d\n", k);
-
-	// printarvore(rbt);
-
+	printf("  Para Árvore Rubro-Negra: ");
+	fp = fopen("tmp.txt", "r");
+	init = clock();
+	rnt = criaRubroNegra();
+	while (fscanf(fp, "%s", p) != EOF)
+		putRubroNegra(rnt, p);
+	end = clock();
 	fclose(fp);
-	liberaRubroNegra(rbt);
+	liberaRubroNegra(rnt);
+	time = (double) (end - init) * 1000.0 / (double) CLOCKS_PER_SEC;
+	printf("%.3g\n", time);
 
-	printf("\nPara Hashing com encadeamento\n");
-	fp = fopen(argv[1], "r");
+	printf("  Para Hashing com encadeamento: ");
+	fp = fopen("tmp.txt", "r");
+	init = clock();
 	hash = criaHashCad();
-	n = 0;
-	while (fscanf(fp, "%s", p) != EOF) {
-		n++;
+	while (fscanf(fp, "%s", p) != EOF)
 		putHashCad(hash, p);
-	}
-
-	printf("n = %d\n", n);
-	printf("size = %d\n", sizeHashCad(hash));
-
-	k = getHashCad(hash, "porra");
-	printf("porra = %d\n", k);
-
+	end = clock();
 	fclose(fp);
 	liberaHashCad(hash);
+	time = (double) (end - init) * 1000.0 / (double) CLOCKS_PER_SEC;
+	printf("%.3g\n", time);
 
-	printf("\nPara Hashing com encadeamento e MTF\n");
-	fp = fopen(argv[1], "r");
+	printf("  Para Hashing com encadeamento e MTF: ");
+	fp = fopen("tmp.txt", "r");
+	init = clock();
 	hashMTF = criaHashCad();
-	n = 0;
-	while (fscanf(fp, "%s", p) != EOF) {
-		n++;
+	while (fscanf(fp, "%s", p) != EOF)
 		putHashCadMTF(hashMTF, p);
-	}
-
-	printf("n = %d\n", n);
-	printf("size = %d\n", sizeHashCad(hashMTF));
-
-	k = getHashCad(hashMTF, "porra");
-	printf("porra = %d\n", k);
-
+	end = clock();
 	fclose(fp);
 	liberaHashCad(hashMTF);
+	time = (double) (end - init) * 1000.0 / (double) CLOCKS_PER_SEC;
+	printf("%.3g\n", time);
 
-	printf("\nPara Hashing com Sondagem Linear\n");
-	fp = fopen(argv[1], "r");
+	printf("  Para Hashing com Sondagem Linear: ");
+	fp = fopen("tmp.txt", "r");
+	init = clock();
 	hashLin = criaHashLin();
-	n = 0;
-	while (fscanf(fp, "%s", p) != EOF) {
-		n++;
+	while (fscanf(fp, "%s", p) != EOF)
 		putHashLin(hashLin, p);
-	}
-
-	printf("n = %d\n", n);
-	printf("size = %d\n", sizeHashLin(hashLin));
-
-	k = getHashLin(hashLin, "porra");
-	printf("porra = %d\n", k);
-
+	end = clock();
 	fclose(fp);
 	liberaHashLin(hashLin);
+	time = (double) (end - init) * 1000.0 / (double) CLOCKS_PER_SEC;
+	printf("%.3g\n", time);
 
-	printf("\nPara Trie, implimentado com Trie ternária\n");
-	fp = fopen(argv[1], "r");
+	printf("  Para Trie, implimentado com Trie Ternária: ");
+	fp = fopen("tmp.txt", "r");
+	init = clock();
 	tst = criaTrie();
-	n = 0;
-	while (fscanf(fp, "%s", p) != EOF) {
-		n++;
+	while (fscanf(fp, "%s", p) != EOF)
 		putTrie(tst, p);
-	}
-
-	printf("n = %d\n", n);
-	printf("size = %d\n", sizeTrie(tst));
-
-	k = getTrie(tst, "porra");
-	printf("porra = %d\n", k);
-
+	end = clock();
 	fclose(fp);
 	liberaTrie(tst);
+	time = (double) (end - init) * 1000.0 / (double) CLOCKS_PER_SEC;
+	printf("%.3g\n", time);
+
+	removeTemp();
 
 	return 0;
+}
+
+static void criaTemp(char* arq) {
+	FILE* fp = fopen(arq, "r");
+	FILE* fq = fopen("tmp.txt", "w");
+	char p[101];
+	int d = 'a' - 'A';
+
+	while(fscanf(fp, "%s", p) != EOF) {
+		for(int i = 0; i < strlen(p); i++) {
+			if (p[i] >= 'A' && p[i] <= 'Z')
+				fprintf(fq, "%c", p[i]-d);
+			else if (p[i] >= 'a' && p[i] <= 'z')
+				fprintf(fq, "%c\n", p[i]);
+		}
+		fprintf(fq, " ");
+	}
+
+	fclose(fp);
+	fclose(fq);
+}
+
+static void removeTemp() {
+	remove("tmp.txt");
 }
